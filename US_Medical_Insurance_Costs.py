@@ -1,6 +1,9 @@
 import csv
 
 with open('insurance.csv') as dataset :
+    names = []
     data = csv.DictReader(dataset)
     for i in data:
-        print(i["age"])
+        names.append(i["age"])
+
+print(names)
