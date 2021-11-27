@@ -41,8 +41,8 @@ class Insurance:
                 return patients_dictionary
 
         def json_file_data(self):
-            with open(Insurance.json_file,'w') as json_dataset :
-                json.dump(Insurance.data_to_dict(),json_dataset)
+            with open(self.json_file,'w') as json_dataset :
+                json.dump(self.data_to_dict(),json_dataset)
             return "File Created ! "
     
     class ages_insights : 
@@ -62,3 +62,6 @@ class Insurance:
 for i in range(20):
     patients_ages_insights = Insurance.ages_insights(i)
     print(patients_ages_insights.count_inquiry())
+
+json_extraction = Insurance.main_data('insurance.csv' , 'json.json')
+print(json_extraction.json_file_data())
