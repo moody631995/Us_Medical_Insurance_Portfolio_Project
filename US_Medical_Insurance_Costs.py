@@ -1,6 +1,43 @@
 import csv 
 import json
 
+with open("insurance.csv") as insurance_csv:
+    insurance_data_info = csv.DictReader(insurance_csv)
+    
+    region_list = []
+    charge_list = []
+    
+    for i in insurance_data_info:
+        regions = i["region"]
+        charges = ["charge"]
+        region_list.append(regions)
+        charge_list.append(charges)
+    
+    sw_count = region_list.count("southwest")
+    se_count = region_list.count("southeast")
+    nw_count = region_list.count("northwest")
+    ne_count = region_list.count("northeast")
+    
+    def region_count():
+        return "There are {} southwest regions, {} southeast regions, {} northwest regions and {} northeast regions in this dataset.".format(sw_count, se_count, nw_count, ne_count)
+    
+    regions_in_dataset = region_count()
+    
+    print(regions_in_dataset)
+    #print(region_list)
+    def estimate_insurance_cost(age, sex, bmi, children, smoker):
+        estimated_cost = 250*age - 128*sex + 280*bmi + 425*children + 24000*smoker - 12500  
+        print("Estimated insurance cost: " + str(estimated_cost))
+        
+    shaks_insurance_cost = estimate_insurance_cost(age = 19, sex = 0, bmi = 27.9, children = 0, smoker = 1)
+    ahmed_insurance_cost = estimate_insurance_cost(age = 18, sex = 1, bmi = 33.77, children = 1, smoker = 0)
+    
+    def average_charge(all_charges):
+        avg_charge = []
+        for lis in charges:
+            return avg_charge.append(sum((len(lis))))
+    average_charge(charge_list)  
+    
 class Insurance:
     
     ages = []
@@ -109,7 +146,7 @@ class Insurance:
 
 for i in range(20):
     patients_ages_insights = Insurance.ages_insights(i)
-    print(patients_ages_insights.count_inquiry())
+    #print(patients_ages_insights.count_inquiry())
 
 json_extraction = Insurance.main_data('insurance.csv' , 'json.json')
 print(json_extraction.json_file_data())
