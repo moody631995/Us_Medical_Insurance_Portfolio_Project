@@ -6,12 +6,18 @@ with open("insurance.csv") as insurance_csv:
     
     region_list = []
     charge_list = []
-    
-    for i in insurance_data_info:
-        regions = i["region"]
-        charge = float(i["charges"])
+    smoker_list = []
+    for v in insurance_data_info:
+        regions = v["region"]
+        charge = float(v["charges"])
+        smokers = v["smoker"]
         region_list.append(regions)
         charge_list.append(charge)
+        smoker_list.append(smokers)
+        
+    
+    
+    
     #print(charge_list)
     sw_count = region_list.count("southwest")
     se_count = region_list.count("southeast")
@@ -33,17 +39,20 @@ with open("insurance.csv") as insurance_csv:
             return "Northeast has the most residents in this dataset"
     client_region_majority = majority_region(sw_count, se_count, nw_count, ne_count)
     
-    print(client_region_majority)
-    print(regions_in_dataset)
-    #print(region_list)
     
     sum_of_charges = sum(charge_list)
     len_of_charges = len(charge_list)
     def charges_avg(lis_sum, lis_len):
         return lis_sum / lis_len
     
+
+
+    #print(smokers_charges)
     average_insurance_cost = charges_avg(sum_of_charges, len_of_charges)
     print("The average insurance cost is roughly", round(average_insurance_cost, 2), ("Dollars."))
+    print(client_region_majority)
+    print(regions_in_dataset)
+    #print(region_list)
     
 class Insurance:
     
