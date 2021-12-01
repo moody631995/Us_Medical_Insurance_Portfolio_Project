@@ -6,18 +6,19 @@ with open("insurance.csv") as insurance_csv:
     
     region_list = []
     charge_list = []
-    smoker_list = []
+    children_list = []
+    full_insurance_dict = []
     for v in insurance_data_info:
         regions = v["region"]
         charge = float(v["charges"])
-        smokers = v["smoker"]
+        children = v["children"]
+        complete_insurace_dict = v
         region_list.append(regions)
         charge_list.append(charge)
-        smoker_list.append(smokers)
-        
+        children_list.append(children)
+        full_insurance_dict.append(complete_insurace_dict)
     
-    
-    
+    #print(full_insurance_dict)
     #print(charge_list)
     sw_count = region_list.count("southwest")
     se_count = region_list.count("southeast")
@@ -25,7 +26,7 @@ with open("insurance.csv") as insurance_csv:
     ne_count = region_list.count("northeast")
     
     def region_count():
-        return "There are {} Southwest regions, {} Southeast regions, {} Northwest regions and {} Northeast regions in this dataset.".format(sw_count, se_count, nw_count, ne_count)
+        return "There are roughly {} Southwest regions, {} Southeast regions, {} Northwest regions and {} Northeast regions in this dataset.".format(sw_count, se_count, nw_count, ne_count)
     regions_in_dataset = region_count()
     
     def majority_region(sw, se, nw, ne):
@@ -42,13 +43,59 @@ with open("insurance.csv") as insurance_csv:
     
     sum_of_charges = sum(charge_list)
     len_of_charges = len(charge_list)
-    def charges_avg(lis_sum, lis_len):
+    
+    def overall_avg(lis_sum, lis_len):
         return lis_sum / lis_len
     
-
-
-    #print(smokers_charges)
-    average_insurance_cost = charges_avg(sum_of_charges, len_of_charges)
+    average_insurance_cost = overall_avg(sum_of_charges, len_of_charges)
+    
+    child_and_charge = []
+    for lis in full_insurance_dict:
+        children_charges = {}
+        listed_children = lis['children']
+        listed_charges = lis['charges']
+        children_charges[listed_children] = listed_charges
+        child_and_charge.append(children_charges)
+    
+    charges_for_zero = []
+    charges_for_one = []
+    charges_for_two = []
+    charges_for_three = []
+    charges_for_four = []
+    charges_for_five = []
+    
+    for dicts in child_and_charge:
+        for key in dicts:
+            if key == '0':
+                charges_for_zero.append(float(dicts[key]))
+            elif key == '1':
+                charges_for_one.append(float(dicts[key]))
+            elif key == '2':
+                charges_for_two.append(float(dicts[key]))
+            elif key == '3':
+                charges_for_three.append(float(dicts[key]))
+            elif key == '4':
+                charges_for_four.append(float(dicts[key]))
+            elif key == '5':
+                charges_for_five.append(float(dicts[key]))
+            
+    def child_avg(input1,input2):
+        overall_sum = sum(input1)
+        overall_len = len(input2)
+        return overall_sum/overall_len
+    
+    zero_children = round(child_avg(charges_for_zero,charges_for_zero), 2)
+    one_child = round(child_avg(charges_for_one, charges_for_one), 2)
+    two_child = round(child_avg(charges_for_two, charges_for_two), 2)
+    three_child = round(child_avg(charges_for_three, charges_for_three), 2)
+    four_child = round(child_avg(charges_for_four, charges_for_four), 2)
+    five_child = round(child_avg(charges_for_five, charges_for_five), 2)
+    
+    
+    def child_prices():
+        return "The average estimated prices per child goes as follows: 0 children: {}$, 1 child: {}$, 2 children: {}$, 3 children: {}$, 4 children: {}$,5 children: {}$".format(zero_children, one_child, two_child, three_child, four_child, five_child)
+    print(child_prices())
+    print(zero_children)
     print("The average insurance cost is roughly", round(average_insurance_cost, 2), ("Dollars."))
     print(client_region_majority)
     print(regions_in_dataset)
@@ -206,7 +253,7 @@ class Insurance:
 
 for i in range(18,65):
     patients_ages_insights = Insurance.ages_insights(i)
-    print(patients_ages_insights.count_inquiry())
+    #print(patients_ages_insights.count_inquiry())
 
 patience_insurance_smokers_data = Insurance.main_data('insurance.csv' , 'json.json')
 (data1,data2) = patience_insurance_smokers_data.data_to_dict()
