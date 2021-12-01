@@ -149,14 +149,72 @@ class Insurance:
                     from_ninethy_to_hundred +=1
 
             return "Between 0 and 10 years old , you have {} smokers \nBetween 10 and 20 years old , you have {} smokers \nBetween 20 and 30 years old , you have {} smokers \nBetween 30 and 40 years old , you have {} smokers \nBetween 40 and 50 years old , you have {} smokers \nBetween 50 and 60 years old , you have {} smokers \nBetween 60 and 70 years old , you have {} smokers \nBetween 70 and 80 years old , you have {} smokers \nBetween 80 and 90 years old , you have {} smokers \nBetween 90 and 100 years old , you have {} smokers \n".format(from_zero_to_ten,from_ten_to_twenty,from_twenty_to_thirty,from_thirty_to_fourty,from_fourty_to_fifty,from_fifty_to_sixty,from_sixty_to_seventy,from_seventy_to_eighty,from_eighty_to_ninethy,from_ninethy_to_hundred)
- 
 
-for i in range(20):
+    class children_insights:
+
+        def average_children(self):
+            self.children_summation = sum(Insurance.children)
+            self.children_number = len(Insurance.children)
+            return "Your dataset has average {} children".format(round(self.children_summation/self.children_number))
+
+        def count_of_children(self, number=0):
+            self.values = []
+            for i in Insurance.children:
+                if i == number :
+                    self.values.append(1)
+                else:
+                    self.values.append(0)
+            
+            self.counts = self.values.count(1)
+            return "Your dataset has {} people having {} children".format(self.counts , number)
+
+    class charges_cost :
+
+        def average_cost(self):
+            self.average_charges = []
+            self.charges_total = len(Insurance.charges)
+            for i in Insurance.charges:
+                self.average_charges.append(int(i))
+            return "Your average charges for your total dataset is {} dollars".format(round(sum(self.average_charges)/self.charges_total))
+
+        def average_charges_per_smoker(self):
+
+            self.smoker_charges = []
+            self.non_smoker_charges = []
+            for i in Insurance.main_data('insurance.csv' , 'json.json').data_to_dict()[0].values():
+                if i["Smoker"] == "yes":
+                    self.smoker_charges.append(i["Charges"])
+                elif i["Smoker"] == "no" :
+                    self.non_smoker_charges.append(i["Charges"])
+            
+            self.smoker_charges_summation = sum(self.smoker_charges)
+            self.non_smoker_charges_summation = sum(self.non_smoker_charges)
+            self.smoker_charges_length = len(self.smoker_charges)
+            self.non_smoker_charges_length = len(self.non_smoker_charges)
+
+            return "The average charge for smokers is {} dollars while the average charge for non smokers is {} dollars".format(round(self.smoker_charges_summation/self.smoker_charges_length),round(self.non_smoker_charges_summation / self.non_smoker_charges_length))
+
+
+for i in range(18,65):
     patients_ages_insights = Insurance.ages_insights(i)
     print(patients_ages_insights.count_inquiry())
 
-json_extraction = Insurance.main_data('insurance.csv' , 'json.json')
-print(json_extraction.json_file_data())
+patience_insurance_smokers_data = Insurance.main_data('insurance.csv' , 'json.json')
+(data1,data2) = patience_insurance_smokers_data.data_to_dict()
+print(data2)
+
+printing_data_as_dictionary = Insurance.main_data('insurance.csv' , 'json.json').data_to_dict()
+print(printing_data_as_dictionary)
+
+writing_to_json = Insurance.main_data('insurance.csv' , 'dataset_dictionary.json').json_file_data()
 
 smokers_by_age1 = Insurance.smoker_insights()
 print(smokers_by_age1.smokers_by_age())
+
+children_insights = Insurance.children_insights()
+print(children_insights.average_children())
+print(children_insights.count_of_children())
+
+charges_insights = Insurance.charges_cost()
+print(charges_insights.average_cost())
+print(charges_insights.average_charges_per_smoker())
