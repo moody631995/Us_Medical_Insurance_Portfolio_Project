@@ -9,34 +9,41 @@ with open("insurance.csv") as insurance_csv:
     
     for i in insurance_data_info:
         regions = i["region"]
-        charges = ["charge"]
+        charge = float(i["charges"])
         region_list.append(regions)
-        charge_list.append(charges)
-    
+        charge_list.append(charge)
+    #print(charge_list)
     sw_count = region_list.count("southwest")
     se_count = region_list.count("southeast")
     nw_count = region_list.count("northwest")
     ne_count = region_list.count("northeast")
     
     def region_count():
-        return "There are {} southwest regions, {} southeast regions, {} northwest regions and {} northeast regions in this dataset.".format(sw_count, se_count, nw_count, ne_count)
-    
+        return "There are {} Southwest regions, {} Southeast regions, {} Northwest regions and {} Northeast regions in this dataset.".format(sw_count, se_count, nw_count, ne_count)
     regions_in_dataset = region_count()
     
+    def majority_region(sw, se, nw, ne):
+        if (sw > se) and (sw > nw) and (sw > ne):
+            return "Southwest has the most residents in this dataset"
+        elif (se > sw) and (se > nw) and (se > ne):
+            return "Southeast has the most residents in this dataset"
+        elif (nw > sw) and (nw > se) and (nw > ne):
+            return "Northwest has the most residents in this dataset"
+        elif (ne > sw) and (ne > se) and (ne > nw):
+            return "Northeast has the most residents in this dataset"
+    client_region_majority = majority_region(sw_count, se_count, nw_count, ne_count)
+    
+    print(client_region_majority)
     print(regions_in_dataset)
     #print(region_list)
-    def estimate_insurance_cost(age, sex, bmi, children, smoker):
-        estimated_cost = 250*age - 128*sex + 280*bmi + 425*children + 24000*smoker - 12500  
-        print("Estimated insurance cost: " + str(estimated_cost))
-        
-    shaks_insurance_cost = estimate_insurance_cost(age = 19, sex = 0, bmi = 27.9, children = 0, smoker = 1)
-    ahmed_insurance_cost = estimate_insurance_cost(age = 18, sex = 1, bmi = 33.77, children = 1, smoker = 0)
     
-    def average_charge(all_charges):
-        avg_charge = []
-        for lis in charges:
-            return avg_charge.append(sum((len(lis))))
-    average_charge(charge_list)  
+    sum_of_charges = sum(charge_list)
+    len_of_charges = len(charge_list)
+    def charges_avg(lis_sum, lis_len):
+        return lis_sum / lis_len
+    
+    average_insurance_cost = charges_avg(sum_of_charges, len_of_charges)
+    print("The average insurance cost is roughly", round(average_insurance_cost, 2), ("Dollars."))
     
 class Insurance:
     
@@ -146,7 +153,7 @@ class Insurance:
 
 for i in range(20):
     patients_ages_insights = Insurance.ages_insights(i)
-    #print(patients_ages_insights.count_inquiry())
+    print(patients_ages_insights.count_inquiry())
 
 json_extraction = Insurance.main_data('insurance.csv' , 'json.json')
 print(json_extraction.json_file_data())
